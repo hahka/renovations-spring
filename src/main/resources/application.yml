@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: "renovations"
+  h2:
+    console: 
+      enabled: true
+  datasource:
+    url: jdbc:h2:mem:dcbapp
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: password
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+security:
+  jwt:
+    token:
+      secret-key: ${JWT_SECRET}
+logging:
+  level:
+    org:
+      springframework:
+        security: TRACE
