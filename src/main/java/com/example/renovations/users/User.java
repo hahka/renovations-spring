@@ -2,7 +2,6 @@ package com.example.renovations.users;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -30,22 +29,22 @@ public class User implements UserDetails {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  private String login;
+  private String username;
 
   private String password;
 
   @Enumerated(EnumType.STRING)
   private UserRole role;
 
-  /*@ManyToMany(fetch = FetchType.LAZY)
+  @ManyToMany(fetch = FetchType.LAZY)
   @JoinTable(name = "USER_PROJECT_MAPPING", joinColumns = @JoinColumn(name = "user_id"), 
-        	inverseJoinColumns = @JoinColumn(name = "project_id"))*/
-  // private List<Project> projects;
+        	inverseJoinColumns = @JoinColumn(name = "project_id"))
+  private List<Project> projects;
 
   protected User() {}
 
-  public User(String login, String password, UserRole role) {
-    this.login = login;
+  public User(String username, String password, UserRole role) {
+    this.username = username;
     this.password = password;
     this.role = role;
   }
@@ -60,7 +59,7 @@ public class User implements UserDetails {
 
   @Override
   public String getUsername() {
-    return login;
+    return username;
   }
 
   @Override

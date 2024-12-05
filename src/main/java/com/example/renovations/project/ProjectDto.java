@@ -19,5 +19,5 @@ public class ProjectDto {
 
     Set<WorkInfo> works;
 
-    // Set<UserInfo> users;
+    Set<UserInfo> users;
 }

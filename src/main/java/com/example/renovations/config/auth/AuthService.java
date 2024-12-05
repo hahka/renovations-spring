@@ -18,16 +18,16 @@ public class AuthService implements UserDetailsService {
 
   @Override
   public UserDetails loadUserByUsername(String username) {
-    var user = repository.findByLogin(username);
+    var user = repository.findByUsername(username);
     return user;
   }
 
   public UserDetails signUp(SignUpDto data) throws JWTCreationException {
-    if (repository.findByLogin(data.login()) != null) {
+    if (repository.findByUsername(data.username()) != null) {
       throw new JWTCreationException("Username already exists", null);
     }
     String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
-    User newUser = new User(data.login(), encryptedPassword, data.role());
+    User newUser = new User(data.username(), encryptedPassword, data.role());
     return repository.save(newUser);
   }
 }

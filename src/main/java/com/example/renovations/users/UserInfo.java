@@ -9,10 +9,10 @@ import lombok.Setter;
 @NoArgsConstructor
 public class UserInfo {
     private Long id;
-    private String login;
+    private String username;
 
     public UserInfo(User user) {
         id = user.getId();
-        login = user.getLogin();
+        username = user.getUsername();
     }
 }

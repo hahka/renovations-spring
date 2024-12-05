@@ -21,7 +21,7 @@ public interface ProjectMapper {
     ProjectMapper INSTANCE = Mappers.getMapper(ProjectMapper.class);
 
     @Mapping(source = "works", target = "works", qualifiedByName = "worksToWorksInfo")
-    // @Mapping(source = "users", target = "users", qualifiedByName = "usersToUsersInfo")
+    @Mapping(source = "users", target = "users", qualifiedByName = "usersToUsersInfo")
     ProjectDto toDto(Project project);
 
     @Qualifier
@@ -35,7 +35,7 @@ public interface ProjectMapper {
 
     @Qualifier
     @Named("usersToUsersInfo")
-    public static Set<UserInfo> usersToUsersInfo(Set<User> users) {
+    public static Set<UserInfo> usersToUsersInfo(List<User> users) {
         if (users == null) {
             return null;
         }

@@ -28,11 +28,11 @@ public class Project {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    /*
+    
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "USER_PROJECT_MAPPING", joinColumns = @JoinColumn(name = "project_id"), 
                 inverseJoinColumns = @JoinColumn(name = "user_id"))
-                */
+                
     private List<User> users;
     
 

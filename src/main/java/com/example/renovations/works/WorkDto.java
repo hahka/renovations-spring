@@ -4,11 +4,8 @@ import java.sql.Date;
 
 import com.example.renovations.project.ProjectInfo;
 import com.example.renovations.worktype.WorkType;
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 
 import lombok.Data;
-
 
 @Data
 public class WorkDto {
