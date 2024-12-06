@@ -24,9 +24,7 @@ public class ProjectController {
 
     @GetMapping("/projects")
     public List<ProjectDto> getProjects() {
-        System.out.println("getProjects");
         List<Project> projects = (List<Project>) projectRepository.findAll();
-        System.out.println("mapProjects");
         return projects.stream().map(project -> projectMapper.toDto(project)).collect(Collectors.toList()); 
     }
 

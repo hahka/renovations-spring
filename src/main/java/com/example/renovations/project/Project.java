@@ -2,7 +2,6 @@ package com.example.renovations.project;
 
 import java.sql.Date;
 import java.util.List;
-import java.util.Set;
 
 import com.example.renovations.users.User;
 import com.example.renovations.works.Work;
@@ -28,13 +27,10 @@ public class Project {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "USER_PROJECT_MAPPING", joinColumns = @JoinColumn(name = "project_id"), 
                 inverseJoinColumns = @JoinColumn(name = "user_id"))
-                
     private List<User> users;
-    
 
     private String label;
 

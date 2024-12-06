@@ -16,8 +16,6 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import lombok.Data;
 
@@ -36,9 +34,7 @@ public class User implements UserDetails {
   @Enumerated(EnumType.STRING)
   private UserRole role;
 
-  @ManyToMany(fetch = FetchType.LAZY)
-  @JoinTable(name = "USER_PROJECT_MAPPING", joinColumns = @JoinColumn(name = "user_id"), 
-        	inverseJoinColumns = @JoinColumn(name = "project_id"))
+  @ManyToMany(fetch = FetchType.LAZY, mappedBy = "users")
   private List<Project> projects;
 
   protected User() {}
