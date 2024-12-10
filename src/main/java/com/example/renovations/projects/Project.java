@@ -2,6 +2,9 @@ package com.example.renovations.projects;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.UUID;
+
+import org.hibernate.annotations.UuidGenerator;
 
 import com.example.renovations.users.User;
 import com.example.renovations.works.Work;
@@ -9,7 +12,6 @@ import com.example.renovations.works.Work;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
@@ -22,10 +24,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity(name = "projects")
 public class Project {
-    
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+
+  @Id
+  @GeneratedValue
+  @UuidGenerator
+  private UUID id;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "USER_PROJECT_MAPPING", joinColumns = @JoinColumn(name = "project_id"), 

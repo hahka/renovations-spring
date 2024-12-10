@@ -1,7 +1,6 @@
 package com.example.renovations.works;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,22 +9,24 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+
+import jakarta.servlet.http.HttpServletRequest;
+
 @RestController
 @RequestMapping("/api/v1")
 @CrossOrigin(origins = "http://localhost:4200")
 public class WorkController {
-    private final WorkRepository workRepository;
-    private final WorkMapper workMapper;
+    private final WorksRepository workRepository;
+    private final WorksService worksService;
 
-    WorkController(WorkRepository workRepository, WorkMapper workMapper) {
+    WorkController(WorksRepository workRepository, WorksService worksService) {
       this.workRepository = workRepository;
-      this.workMapper = workMapper;
+      this.worksService = worksService;
     }
 
     @GetMapping("/works")
-    public List<WorkDto> getWorks() {
-        List<Work> works = (List<Work>) workRepository.findAll();
-        return works.stream().map(work -> workMapper.toDto(work)).collect(Collectors.toList()); 
+    public List<WorkDto> getWorks(HttpServletRequest request) {
+        return worksService.getWorks(request);
     }
 
     @PostMapping("/works")

@@ -1,6 +1,7 @@
 package com.example.renovations.works;
 
 import java.sql.Date;
+import java.util.UUID;
 
 import com.example.renovations.projects.ProjectInfo;
 import com.example.renovations.worktype.WorkType;
@@ -9,7 +10,7 @@ import lombok.Data;
 
 @Data
 public class WorkDto {
-    long id;
+    UUID id;
 
     WorkType[] workTypes;
 

@@ -1,6 +1,9 @@
 package com.example.renovations.works;
 
 import java.sql.Date;
+import java.util.UUID;
+
+import org.hibernate.annotations.UuidGenerator;
 
 import com.example.renovations.projects.Project;
 import com.example.renovations.worktype.WorkType;
@@ -8,7 +11,6 @@ import com.example.renovations.worktype.WorkType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -18,8 +20,9 @@ import lombok.Data;
 @Entity(name = "works")
 public class Work {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    @GeneratedValue
+    @UuidGenerator
+    private UUID id;
 
     private WorkType[] workTypes;
 

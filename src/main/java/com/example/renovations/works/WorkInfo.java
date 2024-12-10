@@ -1,6 +1,7 @@
 package com.example.renovations.works;
 
 import java.sql.Date;
+import java.util.UUID;
 
 import com.example.renovations.worktype.WorkType;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -15,7 +16,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @JsonAutoDetect(fieldVisibility = Visibility.ANY)
 public class WorkInfo {
-    private long id;
+    private UUID id;
 
     private WorkType[] workTypes;
 

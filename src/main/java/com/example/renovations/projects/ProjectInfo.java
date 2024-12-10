@@ -1,6 +1,7 @@
 package com.example.renovations.projects;
 
 import java.sql.Date;
+import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
@@ -12,7 +13,7 @@ import lombok.Setter;
 @Setter
 @JsonAutoDetect(fieldVisibility = Visibility.ANY)
 public class ProjectInfo {
-    long id;
+    UUID id;
 
     String label;
 
