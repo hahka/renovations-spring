@@ -2,19 +2,20 @@ package com.example.renovations.users;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
+import org.hibernate.annotations.UuidGenerator;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.example.renovations.project.Project;
+import com.example.renovations.projects.Project;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import lombok.Data;
@@ -24,8 +25,9 @@ import lombok.Data;
 public class User implements UserDetails {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+  @GeneratedValue
+  @UuidGenerator
+  private UUID id;
 
   private String username;
 
@@ -40,6 +42,13 @@ public class User implements UserDetails {
   protected User() {}
 
   public User(String username, String password, UserRole role) {
+    this.username = username;
+    this.password = password;
+    this.role = role;
+  }
+
+  public User(UUID id, String username, String password, UserRole role) {
+    this.id = id;
     this.username = username;
     this.password = password;
     this.role = role;

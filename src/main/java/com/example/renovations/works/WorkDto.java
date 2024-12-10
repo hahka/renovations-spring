@@ -2,7 +2,7 @@ package com.example.renovations.works;
 
 import java.sql.Date;
 
-import com.example.renovations.project.ProjectInfo;
+import com.example.renovations.projects.ProjectInfo;
 import com.example.renovations.worktype.WorkType;
 
 import lombok.Data;

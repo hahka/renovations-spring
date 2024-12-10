@@ -2,7 +2,7 @@ package com.example.renovations.works;
 
 import java.sql.Date;
 
-import com.example.renovations.project.Project;
+import com.example.renovations.projects.Project;
 import com.example.renovations.worktype.WorkType;
 
 import jakarta.persistence.Entity;

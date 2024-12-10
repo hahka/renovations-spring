@@ -10,8 +10,8 @@ import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Qualifier;
 
-import com.example.renovations.project.Project;
-import com.example.renovations.project.ProjectInfo;
+import com.example.renovations.projects.Project;
+import com.example.renovations.projects.ProjectInfo;
 
 
 @Mapper(componentModel = "spring")
@@ -24,7 +24,6 @@ public interface UserMapper {
     @Qualifier
     @Named("projectsToProjectsInfo")
     public static Set<ProjectInfo> projectsToProjectsInfo(List<Project> projects) {
-        System.out.println("_____ mapper");
         if (projects == null) {
             return null;
         }

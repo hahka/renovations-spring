@@ -1,4 +1,4 @@
-package com.example.renovations.project;
+package com.example.renovations.projects;
 
 import java.sql.Date;
 

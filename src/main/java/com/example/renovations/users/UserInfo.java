@@ -1,5 +1,7 @@
 package com.example.renovations.users;
 
+import java.util.UUID;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -8,7 +10,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class UserInfo {
-    private Long id;
+    private UUID id;
     private String username;
 
     public UserInfo(User user) {

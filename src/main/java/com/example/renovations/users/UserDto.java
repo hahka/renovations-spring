@@ -1,14 +1,15 @@
 package com.example.renovations.users;
 
 import java.util.Set;
+import java.util.UUID;
 
-import com.example.renovations.project.ProjectInfo;
+import com.example.renovations.projects.ProjectInfo;
 
 import lombok.Data;
 
 @Data
 public class UserDto {
-  private Long id;
+  private UUID id;
 
   private String username;
 

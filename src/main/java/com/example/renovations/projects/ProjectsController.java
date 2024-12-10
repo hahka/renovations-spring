@@ -1,7 +1,6 @@
-package com.example.renovations.project;
+package com.example.renovations.projects;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,22 +9,24 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+
+import jakarta.servlet.http.HttpServletRequest;
+
 @RestController
 @RequestMapping("/api/v1")
 @CrossOrigin(origins = "http://localhost:4200")
-public class ProjectController {
-    private final ProjectRepository projectRepository;
-    private final ProjectMapper projectMapper;
+public class ProjectsController {
+    private final ProjectsRepository projectRepository;
+    private final ProjectsService projectsService;
 
-    ProjectController(ProjectRepository projectRepository, ProjectMapper projectMapper) {
-      this.projectRepository = projectRepository;
-      this.projectMapper = projectMapper;
+    ProjectsController(ProjectsService projectsService, ProjectsRepository projectsRepository) {
+      this.projectsService = projectsService;
+      this.projectRepository = projectsRepository;
     }
 
     @GetMapping("/projects")
-    public List<ProjectDto> getProjects() {
-        List<Project> projects = (List<Project>) projectRepository.findAll();
-        return projects.stream().map(project -> projectMapper.toDto(project)).collect(Collectors.toList()); 
+    public List<ProjectDto> getProjects(HttpServletRequest request) {
+        return projectsService.getProjects(request);
     }
 
     @PostMapping("/projects")
