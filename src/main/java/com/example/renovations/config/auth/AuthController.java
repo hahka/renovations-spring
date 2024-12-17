@@ -33,8 +33,9 @@ public class AuthController {
   @PostMapping("/signin")
   public ResponseEntity<JwtDto> signIn(@RequestBody @Valid SignInDto data) {
     var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());
-    var authUser = authenticationManager.authenticate(usernamePassword);
-    var accessToken = tokenService.generateAccessToken((User) authUser.getPrincipal());
+    var authentication = authenticationManager.authenticate(usernamePassword);
+    System.out.println(authentication.getPrincipal());
+    var accessToken = tokenService.generateAccessToken((User) authentication.getPrincipal());
     return ResponseEntity.ok(new JwtDto(accessToken));
   }
 }

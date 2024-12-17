@@ -28,7 +28,7 @@ public class AuthConfig {
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(authorize -> authorize
           .requestMatchers(HttpMethod.POST, "/api/v1/auth/*").permitAll()
-          .requestMatchers(HttpMethod.GET, "/error").permitAll()
+          .requestMatchers("/error").permitAll()
           .requestMatchers("/h2-console*").permitAll()
           .requestMatchers("/h2-console/*").permitAll()
           .anyRequest().authenticated()

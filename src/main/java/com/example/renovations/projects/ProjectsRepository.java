@@ -8,7 +8,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ProjectsRepository extends CrudRepository<Project, Long>{
+public interface ProjectsRepository extends CrudRepository<Project, UUID>{
     @Query("SELECT p FROM projects p JOIN FETCH p.users u WHERE u.id = ?1")
     List<Project> findUserProjects(UUID userId);
 }

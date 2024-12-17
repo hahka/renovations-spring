@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 
 
 @Repository
-public interface WorksRepository extends CrudRepository<Work, Long> {
+public interface WorksRepository extends CrudRepository<Work, UUID> {
     @Query(
         "SELECT w from works w " + 
         "JOIN FETCH w.parentProject p " +

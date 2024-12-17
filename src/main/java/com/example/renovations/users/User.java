@@ -8,6 +8,7 @@ import org.hibernate.annotations.UuidGenerator;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
 
 import com.example.renovations.projects.Project;
 
@@ -20,6 +21,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import lombok.Data;
 
+@Component
 @Data()
 @Entity(name = "users")
 public class User implements UserDetails {
@@ -41,6 +43,10 @@ public class User implements UserDetails {
 
   protected User() {}
 
+  public User(UUID id) {
+    this.id = id;
+  }
+  
   public User(String username, String password, UserRole role) {
     this.username = username;
     this.password = password;
@@ -48,7 +54,7 @@ public class User implements UserDetails {
   }
 
   public User(UUID id, String username, String password, UserRole role) {
-    this.id = id;
+    this.id = id; 
     this.username = username;
     this.password = password;
     this.role = role;
