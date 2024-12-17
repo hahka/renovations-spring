@@ -19,9 +19,11 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
+import lombok.Builder;
 import lombok.Data;
 
 @Component
+@Builder
 @Data()
 @Entity(name = "users")
 public class User implements UserDetails {
@@ -43,21 +45,12 @@ public class User implements UserDetails {
 
   protected User() {}
 
-  public User(UUID id) {
-    this.id = id;
-  }
-  
-  public User(String username, String password, UserRole role) {
-    this.username = username;
-    this.password = password;
-    this.role = role;
-  }
-
-  public User(UUID id, String username, String password, UserRole role) {
+  public User(UUID id, String username, String password, UserRole role, List<Project> projects) {
     this.id = id; 
     this.username = username;
     this.password = password;
     this.role = role;
+    this.projects = projects;
   }
 
   @Override

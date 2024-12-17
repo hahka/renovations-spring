@@ -49,7 +49,11 @@ public class ProjectsService {
 
     public void createProject(HttpServletRequest request, Project project) {
         List<User> list = new ArrayList<User>(); 
-        list.add(new User(UUID.fromString(tokenService.getIdFromToken(request))));
+        list.add(
+            User.builder()
+            .id(UUID.fromString(tokenService.getIdFromToken(request)))
+            .build()
+        );
         project.setUsers(list);
         projectsRepository.save(project);
     } 

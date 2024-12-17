@@ -23,8 +23,13 @@ public class AuthService implements UserDetailsService {
       if(user == null) {
           throw new UsernameNotFoundException("Unknown user "+ username);
       }
-      // Need to create a new user to remove projects, which are not needed and won't be available later du to lazy loading
-      return new User(user.getId(), user.getUsername(), user.getPassword(), user.getRole());
+      // Need to create a new user to remove projects, which are not needed and won't be available later due to lazy loading
+      return User.builder()
+        .id(user.getId())
+        .username(user.getUsername())
+        .password(user.getPassword())
+        .role(user.getRole())
+        .build();
     }
 
   public UserDetails signUp(SignUpDto data) throws JWTCreationException {
@@ -32,6 +37,6 @@ public class AuthService implements UserDetailsService {
       throw new JWTCreationException("Username already exists", null);
     }
     String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
-    return repository.save(new User(data.username(), encryptedPassword, data.role()));
+    return repository.save(User.builder().username(data.username()).password(encryptedPassword).role(data.role()).build());
   }
 }

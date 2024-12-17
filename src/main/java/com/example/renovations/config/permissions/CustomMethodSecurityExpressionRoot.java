@@ -6,13 +6,11 @@ import org.springframework.security.access.expression.method.MethodSecurityExpre
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.core.Authentication;
 
-import jakarta.servlet.http.HttpServletRequest;
 
 @Configuration
 @EnableMethodSecurity
 public class CustomMethodSecurityExpressionRoot extends SecurityExpressionRoot implements MethodSecurityExpressionOperations {
 
-    private HttpServletRequest request;
     private Object filterObject;
     private Object returnObject;
     private Object target;

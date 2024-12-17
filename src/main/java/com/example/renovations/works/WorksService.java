@@ -10,8 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.renovations.config.auth.TokenProvider;
-import com.example.renovations.projects.Project;
-import com.example.renovations.projects.ProjectDto;
 
 import jakarta.servlet.http.HttpServletRequest;
 
