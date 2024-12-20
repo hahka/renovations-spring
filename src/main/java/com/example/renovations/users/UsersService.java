@@ -1,5 +1,6 @@
 package com.example.renovations.users;
 
+import java.nio.file.AccessDeniedException;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -25,8 +26,9 @@ public class UsersService {
     this.userMapper = userMapper;
   }
 
-  public UserDto getUser(String username) {
+  public UserDto getUser(String username) throws AccessDeniedException {
     User user = (User) userRepository.findByUsername(username);
+    System.out.println(user.getId());
     return userMapper.toDto(user); 
   }
 

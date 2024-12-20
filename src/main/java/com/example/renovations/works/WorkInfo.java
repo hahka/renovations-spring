@@ -3,7 +3,8 @@ package com.example.renovations.works;
 import java.sql.Date;
 import java.util.UUID;
 
-import com.example.renovations.worktype.WorkType;
+import com.example.renovations.worktypes.WorkType;
+import com.example.renovations.worktypes.WorkTypeInfo;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 
@@ -18,7 +19,7 @@ import lombok.Setter;
 public class WorkInfo {
     private UUID id;
 
-    private WorkType[] workTypes;
+    private WorkTypeInfo workType;
 
     private String label;
 
@@ -31,7 +32,7 @@ public class WorkInfo {
         if (work != null) {
             setId(work.getId());
             setLabel(work.getLabel());
-            setWorkTypes(work.getWorkTypes());
+            setWorkType(new WorkTypeInfo(work.getWorkType()));
             setStartDate(work.getStartDate());
             setEndDate(work.getEndDate());
             setComment(work.getComment());

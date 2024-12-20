@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 
 import com.example.renovations.projects.Project;
 import com.example.renovations.projects.ProjectInfo;
+import com.example.renovations.worktypes.WorkType;
+import com.example.renovations.worktypes.WorkTypeInfo;
 
 
 @Mapper(componentModel = "spring")
@@ -19,6 +21,7 @@ public interface UserMapper {
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
     @Mapping(source = "projects", target = "projects", qualifiedByName = "projectsToProjectsInfo")
+    @Mapping(source = "workTypes", target = "workTypes", qualifiedByName = "workTypesToWorkTypesInfo")
     UserDto toDto(User user);
 
     @Qualifier
@@ -28,5 +31,14 @@ public interface UserMapper {
             return null;
         }
         return projects.stream().map(project -> new ProjectInfo(project)).collect(Collectors.toSet());
+    }
+
+    @Qualifier
+    @Named("workTypesToWorkTypesInfo")
+    public static Set<WorkTypeInfo> workTypesToWorkTypesInfo(List<WorkType> workTypes) {
+        if (workTypes == null) {
+            return null;
+        }
+        return workTypes.stream().map(workType -> new WorkTypeInfo(workType)).collect(Collectors.toSet());
     }
 }

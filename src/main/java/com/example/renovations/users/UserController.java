@@ -1,6 +1,10 @@
 package com.example.renovations.users;
 
 
+import java.nio.file.AccessDeniedException;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,12 +25,17 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    public UserDto getUser(@RequestParam String username) {
-      return usersService.getUser(username);
+    public ResponseEntity<UserDto> getUser(@RequestParam String username) throws AccessDeniedException {
+      try { 
+        UserDto userDto = usersService.getUser(username);
+        return ResponseEntity.status(HttpStatus.OK).body(userDto);
+      } catch (Exception e) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+      }
     }
 
     @GetMapping("/users/me")
     public UserDto getCurrentUser(HttpServletRequest request) {
-      return usersService.getCurrentUser(request);
+        return usersService.getCurrentUser(request);
     }
 }

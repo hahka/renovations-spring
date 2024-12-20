@@ -4,6 +4,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import com.example.renovations.projects.ProjectInfo;
+import com.example.renovations.worktypes.WorkTypeInfo;
 
 import lombok.Data;
 
@@ -15,4 +16,5 @@ public class UserDto {
 
   private Set<ProjectInfo> projects;
 
+  private Set<WorkTypeInfo> workTypes;
 }

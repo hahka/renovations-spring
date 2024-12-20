@@ -4,7 +4,7 @@ import java.sql.Date;
 import java.util.UUID;
 
 import com.example.renovations.projects.ProjectInfo;
-import com.example.renovations.worktype.WorkType;
+import com.example.renovations.worktypes.WorkTypeInfo;
 
 import lombok.Data;
 
@@ -12,7 +12,7 @@ import lombok.Data;
 public class WorkDto {
     UUID id;
 
-    WorkType[] workTypes;
+    WorkTypeInfo workType;
 
     String label;
 

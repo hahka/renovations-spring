@@ -6,7 +6,7 @@ import java.util.UUID;
 import org.hibernate.annotations.UuidGenerator;
 
 import com.example.renovations.projects.Project;
-import com.example.renovations.worktype.WorkType;
+import com.example.renovations.worktypes.WorkType;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -15,8 +15,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 @Entity(name = "works")
 public class Work {
     @Id
@@ -24,7 +26,9 @@ public class Work {
     @UuidGenerator
     private UUID id;
 
-    private WorkType[] workTypes;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="work_type_id")
+    private WorkType workType;
 
     private String label;
 
@@ -37,21 +41,19 @@ public class Work {
     @JoinColumn(name="parent_project_id")
     private Project parentProject;
 
-    protected Work() {}
-
     public Work(
-        WorkType[] workTypes,
+        WorkType workType,
         String label,
         String comment
         ) {
-        this.workTypes = workTypes;
+        this.workType = workType;
         this.label = label;
         this.comment = label;
     }
 
     @Override
     public String toString() {
-        return String.format("Work [id=%d, label=%s, startDate=%s, endDate=%s, comment=%s, workTypes=%s]", id, label, startDate, endDate, comment, workTypes);
+        return String.format("Work [id=%d, label=%s, startDate=%s, endDate=%s, comment=%s, workType=%s]", id, label, startDate, endDate, comment, workType);
     }
 
 }

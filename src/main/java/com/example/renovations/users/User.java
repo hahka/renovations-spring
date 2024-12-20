@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import com.example.renovations.projects.Project;
+import com.example.renovations.worktypes.WorkType;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -19,6 +20,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import lombok.Builder;
 import lombok.Data;
 
@@ -43,14 +45,18 @@ public class User implements UserDetails {
   @ManyToMany(fetch = FetchType.LAZY, mappedBy = "users")
   private List<Project> projects;
 
+  @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+  private List<WorkType> workTypes;
+
   protected User() {}
 
-  public User(UUID id, String username, String password, UserRole role, List<Project> projects) {
+  public User(UUID id, String username, String password, UserRole role, List<Project> projects, List<WorkType> workTypes) {
     this.id = id; 
     this.username = username;
     this.password = password;
     this.role = role;
     this.projects = projects;
+    this.workTypes = workTypes;
   }
 
   @Override

@@ -51,7 +51,6 @@ public class WorkController {
             worksService.patchWork(request, workId, workDto);
             return ResponseEntity.status(HttpStatus.OK).body(null);
         } catch (Exception e) {
-            System.out.println("FORBIDDEN");
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
         }
     }
