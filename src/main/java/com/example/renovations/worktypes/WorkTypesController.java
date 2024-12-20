@@ -35,8 +35,12 @@ public class WorkTypesController {
     }
 
     @GetMapping("/work_types/{workTypeId}")
-    public WorkTypeDto getWorkById(HttpServletRequest request, @PathVariable String workTypeId) {
-        return workTypesService.getWorkTypeById(request, workTypeId);
+    public ResponseEntity<WorkTypeDto> getWorkById(HttpServletRequest request, @PathVariable String workTypeId) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(workTypesService.getWorkTypeById(request, workTypeId));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+        }
     }
 
     @PostMapping("/work_types")
@@ -45,12 +49,11 @@ public class WorkTypesController {
     }
 
     @PatchMapping("/work_types/{workId}")
-    ResponseEntity<Object> patchProject(HttpServletRequest request, @PathVariable String workTypeId, @RequestBody WorkTypeDto workTypeDto) throws AccessDeniedException {
+    ResponseEntity<Object> patchProject(HttpServletRequest request, @PathVariable String workTypeId, @RequestBody WorkTypeDto workTypeDto) {
         try {
             workTypesService.patchWorkType(request, workTypeId, workTypeDto);
             return ResponseEntity.status(HttpStatus.OK).body(null);
         } catch (Exception e) {
-            System.out.println("FORBIDDEN");
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
         }
     }

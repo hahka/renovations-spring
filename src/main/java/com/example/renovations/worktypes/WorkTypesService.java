@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.renovations.config.auth.TokenProvider;
+import com.example.renovations.users.User;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -36,12 +37,18 @@ public class WorkTypesService {
         return workTypes.stream().map(work -> workTypeMapper.toDto(request, work, userId)).collect(Collectors.toList()); 
     } 
 
-    public WorkTypeDto getWorkTypeById(HttpServletRequest request, String workId) {
-        Optional<WorkType> workType = workTypesRepository.findById(UUID.fromString(workId));
-        if (!workType.isPresent()) {
-            return null;
+    public WorkTypeDto getWorkTypeById(HttpServletRequest request, String workId) throws AccessDeniedException {
+        Optional<WorkType> optWorkType = workTypesRepository.findById(UUID.fromString(workId));
+        if (!optWorkType.isPresent()) {
+            throw new AccessDeniedException(null);
         }
-        return workTypeMapper.toDto(request, workType.get(), UUID.fromString(tokenService.getIdFromToken(request))); 
+        WorkType workType = optWorkType.get();
+        User workTypeUser = workType.getUser();
+        UUID userId = UUID.fromString(tokenService.getIdFromToken(request));
+        if (workTypeUser != null && !workTypeUser.getId().equals(userId)) {
+            throw new AccessDeniedException(null);
+        }
+        return workTypeMapper.toDto(request, workType, userId); 
     } 
 
     public void patchWorkType(HttpServletRequest request, String workTypeId, WorkTypeDto workTypeDto) throws AccessDeniedException {
