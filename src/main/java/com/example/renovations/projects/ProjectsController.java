@@ -1,9 +1,10 @@
 package com.example.renovations.projects;
 
 import java.nio.file.AccessDeniedException;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PostAuthorize;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.servlet.http.HttpServletRequest;
 
+
 @RestController
 @RequestMapping("/api/v1")
 public class ProjectsController {
@@ -24,8 +26,8 @@ public class ProjectsController {
     private ProjectsService projectsService;
 
     @GetMapping("/projects")
-    public List<ProjectDto> getProjects(HttpServletRequest request) {
-        return projectsService.getProjects(request);
+    public Page<ProjectDto> getProjects(Pageable p, HttpServletRequest request) {
+        return projectsService.getProjects(request, p);
     }
 
     @PostAuthorize("@projectsPermissions.ownsProject(#request, returnObject)")

@@ -34,7 +34,8 @@ public class AuthConfig {
         .formLogin(formLogin -> formLogin.disable())
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(authorize -> authorize
-            .requestMatchers(HttpMethod.POST, "/api/v1/auth/*").permitAll()
+            .requestMatchers(HttpMethod.POST, "/api/v1/auth/signin").permitAll()
+            .requestMatchers(HttpMethod.OPTIONS, "/api/v1/auth/signin").permitAll()
             .requestMatchers("/error").permitAll()
             .requestMatchers("/h2-console*").permitAll()
             .requestMatchers("/h2-console/*").permitAll()
@@ -68,8 +69,8 @@ public class AuthConfig {
   CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration configuration = new CorsConfiguration();
     configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
-    configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PATCH", "DELETE"));
-    configuration.setAllowedHeaders(Arrays.asList("authorization"));
+    configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PATCH", "DELETE", "OPTIONS"));
+    configuration.setAllowedHeaders(Arrays.asList("authorization", "Content-Type"));
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
     source.registerCorsConfiguration("/**", configuration);
     return source;

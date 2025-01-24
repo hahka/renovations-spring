@@ -5,9 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.example.renovations.config.auth.TokenProvider;
@@ -20,7 +21,7 @@ public class ProjectsService {
     ProjectsRepository projectsRepository;
 
     ProjectMapper projectMapper;
-    
+
     TokenProvider tokenService;
 
     @Autowired
@@ -32,38 +33,36 @@ public class ProjectsService {
         this.tokenService = tokenProvider;
     }
 
-    public List<ProjectDto> getProjects(HttpServletRequest request) {
-        List<Project> projects = (List<Project>) projectsRepository.findUserProjects(
-            UUID.fromString(tokenService.getIdFromToken(request))
-        );
-        return projects.stream().map(project -> projectMapper.toDto(project)).collect(Collectors.toList()); 
-    } 
+    public Page<ProjectDto> getProjects(HttpServletRequest request, Pageable p) {
+        Page<Project> projects2 = projectsRepository
+                .findUserProjects(UUID.fromString(tokenService.getIdFromToken(request)), p);
+        return projects2.map((project) -> projectMapper.toDto(project));
+    }
 
     public ProjectDto getProjectById(HttpServletRequest request, String projectId) {
         Optional<Project> project = projectsRepository.findById(UUID.fromString(projectId));
         if (!project.isPresent()) {
             return null;
         }
-        return projectMapper.toDto(project.get()); 
-    } 
+        return projectMapper.toDto(project.get());
+    }
 
     public void createProject(HttpServletRequest request, Project project) {
-        List<User> list = new ArrayList<User>(); 
+        List<User> list = new ArrayList<User>();
         list.add(
-            User.builder()
-            .id(UUID.fromString(tokenService.getIdFromToken(request)))
-            .build()
-        );
+                User.builder()
+                        .id(UUID.fromString(tokenService.getIdFromToken(request)))
+                        .build());
         project.setUsers(list);
         projectsRepository.save(project);
-    } 
+    }
 
-    public void patchProject(HttpServletRequest request, String projectId, ProjectDto projectDto) throws AccessDeniedException {
+    public void patchProject(HttpServletRequest request, String projectId, ProjectDto projectDto)
+            throws AccessDeniedException {
         Optional<Project> optProject = projectsRepository.findById(UUID.fromString(projectId));
         if (optProject.isPresent()) {
             Project project = optProject.get();
             if (projectsPermissions.ownsProject(request, projectMapper.toDto(project))) {
-
                 project.setLabel(projectDto.getLabel());
                 project.setStartDate(projectDto.getStartDate());
                 project.setEndDate(projectDto.getEndDate());
@@ -72,5 +71,5 @@ public class ProjectsService {
                 throw new AccessDeniedException(null);
             }
         }
-    } 
+    }
 }

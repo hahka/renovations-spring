@@ -19,13 +19,14 @@ public class WorkTypesService {
     WorkTypesRepository workTypesRepository;
 
     WorkTypeMapper workTypeMapper;
-    
+
     TokenProvider tokenService;
 
     @Autowired
     WorkTypesPermissions workTypesPermissions;
 
-    WorkTypesService(WorkTypesRepository workTypesRepository, WorkTypeMapper workTypeMapper, TokenProvider tokenProvider) {
+    WorkTypesService(WorkTypesRepository workTypesRepository, WorkTypeMapper workTypeMapper,
+            TokenProvider tokenProvider) {
         this.workTypesRepository = workTypesRepository;
         this.workTypeMapper = workTypeMapper;
         this.tokenService = tokenProvider;
@@ -34,8 +35,8 @@ public class WorkTypesService {
     public List<WorkTypeDto> getWorkTypes(HttpServletRequest request) {
         UUID userId = UUID.fromString(tokenService.getIdFromToken(request));
         List<WorkType> workTypes = (List<WorkType>) workTypesRepository.findUserWorkTypes(userId);
-        return workTypes.stream().map(work -> workTypeMapper.toDto(request, work, userId)).collect(Collectors.toList()); 
-    } 
+        return workTypes.stream().map(work -> workTypeMapper.toDto(request, work, userId)).collect(Collectors.toList());
+    }
 
     public WorkTypeDto getWorkTypeById(HttpServletRequest request, String workId) throws AccessDeniedException {
         Optional<WorkType> optWorkType = workTypesRepository.findById(UUID.fromString(workId));
@@ -48,19 +49,31 @@ public class WorkTypesService {
         if (workTypeUser != null && !workTypeUser.getId().equals(userId)) {
             throw new AccessDeniedException(null);
         }
-        return workTypeMapper.toDto(request, workType, userId); 
-    } 
+        return workTypeMapper.toDto(request, workType, userId);
+    }
 
-    public void patchWorkType(HttpServletRequest request, String workTypeId, WorkTypeDto workTypeDto) throws AccessDeniedException {
+    public void postWorkType(HttpServletRequest request, WorkType workType) {
+        workType.setUser(User.builder()
+                .id(UUID.fromString(tokenService.getIdFromToken(request)))
+                .build());
+        workTypesRepository.save(workType);
+    }
+
+    public void patchWorkType(HttpServletRequest request, String workTypeId, WorkTypeDto workTypeDto)
+            throws AccessDeniedException {
         Optional<WorkType> optWorkType = workTypesRepository.findById(UUID.fromString(workTypeId));
+
         if (optWorkType.isPresent()) {
             WorkType workType = optWorkType.get();
-            if (workTypesPermissions.canUserUpdate(workTypeMapper.toDto(request, workType, UUID.fromString(tokenService.getIdFromToken(request))))) {
-                workType.setLabel(workType.getLabel());
+            if (workTypesPermissions.canUserUpdate(
+                    workTypeMapper.toDto(request, workType, UUID.fromString(tokenService.getIdFromToken(request))))) {
+                workType.setLabel(workTypeDto.getLabel());
                 workTypesRepository.save(workType);
             } else {
                 throw new AccessDeniedException(null);
             }
+        } else {
+            throw new AccessDeniedException(null);
         }
-    } 
+    }
 }

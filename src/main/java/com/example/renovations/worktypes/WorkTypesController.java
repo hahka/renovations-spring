@@ -1,11 +1,9 @@
 package com.example.renovations.worktypes;
 
-import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -21,12 +19,10 @@ import jakarta.servlet.http.HttpServletRequest;
 @RequestMapping("/api/v1")
 @CrossOrigin(origins = "http://localhost:4200")
 public class WorkTypesController {
-    private final WorkTypesRepository workTypesRepository;
     private final WorkTypesService workTypesService;
 
-    WorkTypesController(WorkTypesRepository workTypesRepository, WorkTypesService workTypesService) {
-      this.workTypesRepository = workTypesRepository;
-      this.workTypesService = workTypesService;
+    WorkTypesController(WorkTypesService workTypesService) {
+        this.workTypesService = workTypesService;
     }
 
     @GetMapping("/work_types")
@@ -35,7 +31,7 @@ public class WorkTypesController {
     }
 
     @GetMapping("/work_types/{workTypeId}")
-    public ResponseEntity<WorkTypeDto> getWorkById(HttpServletRequest request, @PathVariable String workTypeId) {
+    public ResponseEntity<WorkTypeDto> getWorkTypeById(HttpServletRequest request, @PathVariable String workTypeId) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(workTypesService.getWorkTypeById(request, workTypeId));
         } catch (Exception e) {
@@ -44,12 +40,13 @@ public class WorkTypesController {
     }
 
     @PostMapping("/work_types")
-    void addWork(@RequestBody WorkType workType) {
-        workTypesRepository.save(workType);
+    void postWorkType(HttpServletRequest request, @RequestBody WorkType workType) {
+        workTypesService.postWorkType(request, workType);
     }
 
-    @PatchMapping("/work_types/{workId}")
-    ResponseEntity<Object> patchProject(HttpServletRequest request, @PathVariable String workTypeId, @RequestBody WorkTypeDto workTypeDto) {
+    @PatchMapping("/work_types/{workTypeId}")
+    ResponseEntity<Object> patchWorkType(HttpServletRequest request, @PathVariable String workTypeId,
+            @RequestBody WorkTypeDto workTypeDto) {
         try {
             workTypesService.patchWorkType(request, workTypeId, workTypeDto);
             return ResponseEntity.status(HttpStatus.OK).body(null);

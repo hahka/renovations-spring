@@ -3,7 +3,6 @@ package com.example.renovations.works;
 import java.sql.Date;
 import java.util.UUID;
 
-import com.example.renovations.worktypes.WorkType;
 import com.example.renovations.worktypes.WorkTypeInfo;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
@@ -27,7 +26,7 @@ public class WorkInfo {
     private Date endDate;
 
     private String comment;
-    
+
     public WorkInfo(Work work) {
         if (work != null) {
             setId(work.getId());
