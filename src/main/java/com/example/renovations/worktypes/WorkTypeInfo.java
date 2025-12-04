@@ -3,8 +3,10 @@ package com.example.renovations.worktypes;
 import java.util.UUID;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 public class WorkTypeInfo {
     UUID id;
 

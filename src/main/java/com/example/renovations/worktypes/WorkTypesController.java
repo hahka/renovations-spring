@@ -2,6 +2,8 @@ package com.example.renovations.worktypes;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -25,12 +27,12 @@ public class WorkTypesController {
         this.workTypesService = workTypesService;
     }
 
-    @GetMapping("/work_types")
-    public List<WorkTypeDto> getWorkTypes(HttpServletRequest request) {
-        return workTypesService.getWorkTypes(request);
+    @GetMapping("/work-types")
+    public Page<WorkTypeDto> getWorkTypes(Pageable p, HttpServletRequest request) {
+        return workTypesService.getWorkTypes(request, p);
     }
 
-    @GetMapping("/work_types/{workTypeId}")
+    @GetMapping("/work-types/{workTypeId}")
     public ResponseEntity<WorkTypeDto> getWorkTypeById(HttpServletRequest request, @PathVariable String workTypeId) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(workTypesService.getWorkTypeById(request, workTypeId));
@@ -39,12 +41,12 @@ public class WorkTypesController {
         }
     }
 
-    @PostMapping("/work_types")
+    @PostMapping("/work-types")
     void postWorkType(HttpServletRequest request, @RequestBody WorkType workType) {
         workTypesService.postWorkType(request, workType);
     }
 
-    @PatchMapping("/work_types/{workTypeId}")
+    @PatchMapping("/work-types/{workTypeId}")
     ResponseEntity<Object> patchWorkType(HttpServletRequest request, @PathVariable String workTypeId,
             @RequestBody WorkTypeDto workTypeDto) {
         try {

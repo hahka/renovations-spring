@@ -15,7 +15,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.access.intercept.AuthorizationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -33,20 +33,24 @@ public class AuthConfig {
         .csrf(csrf -> csrf.disable())
         .formLogin(formLogin -> formLogin.disable())
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        .exceptionHandling(exception -> exception
+          //.accessDeniedHandler(new CustomAccessDeniedHandler())
+          .authenticationEntryPoint(new CustomAuthenticationEntryPoint()))
         .authorizeHttpRequests(authorize -> authorize
-            .requestMatchers(HttpMethod.POST, "/api/v1/auth/signin").permitAll()
-            .requestMatchers(HttpMethod.OPTIONS, "/api/v1/auth/signin").permitAll()
-            .requestMatchers("/error").permitAll()
-            .requestMatchers("/h2-console*").permitAll()
-            .requestMatchers("/h2-console/*").permitAll()
-            .anyRequest().authenticated())
+          .requestMatchers(HttpMethod.POST, "/api/v1/auth/signin").permitAll()
+          .requestMatchers(HttpMethod.OPTIONS, "/api/v1/auth/signin").permitAll()
+          .requestMatchers("/error").permitAll()
+          .requestMatchers("/h2-console*").permitAll()
+          .requestMatchers("/h2-console/*").permitAll()
+          .anyRequest().authenticated()
+        )
         .headers(headers -> headers.frameOptions(frameOptionsConfig -> {
           // For h2-console
           frameOptionsConfig.disable();
           // For h2-console
           frameOptionsConfig.sameOrigin();
         }))
-        .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
+        .addFilterBefore(securityFilter, AuthorizationFilter.class)
         .build();
   }
 
@@ -71,8 +75,10 @@ public class AuthConfig {
     configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
     configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PATCH", "DELETE", "OPTIONS"));
     configuration.setAllowedHeaders(Arrays.asList("authorization", "Content-Type"));
+    configuration.setAllowCredentials(true);
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
     source.registerCorsConfiguration("/**", configuration);
     return source;
   }
+
 }

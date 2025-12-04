@@ -10,6 +10,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ProjectsRepository extends JpaRepository<Project, UUID>{
-    @Query("SELECT p FROM projects p JOIN FETCH p.users u WHERE u.id = ?1")
-    Page<Project> findUserProjects(UUID userId, Pageable p);
+    @Query("SELECT p FROM projects p JOIN FETCH p.users u WHERE u.id = ?1 AND lower(p.label) LIKE lower(concat('%', ?2,'%'))")
+    Page<Project> findUserProjects(UUID userId, String search, Pageable p);
 }

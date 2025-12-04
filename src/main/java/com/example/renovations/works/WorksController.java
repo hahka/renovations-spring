@@ -20,11 +20,11 @@ import jakarta.servlet.http.HttpServletRequest;
 @RestController
 @RequestMapping("/api/v1")
 @CrossOrigin(origins = "http://localhost:4200")
-public class WorkController {
+public class WorksController {
     private final WorksRepository workRepository;
     private final WorksService worksService;
 
-    WorkController(WorksRepository workRepository, WorksService worksService) {
+    WorksController(WorksRepository workRepository, WorksService worksService) {
       this.workRepository = workRepository;
       this.worksService = worksService;
     }

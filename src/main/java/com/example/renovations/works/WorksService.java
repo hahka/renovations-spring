@@ -46,15 +46,19 @@ public class WorksService {
     } 
 
     public void patchWork(HttpServletRequest request, String workId, WorkDto workDto) throws AccessDeniedException {
+        System.out.println("TEST 00");
         Optional<Work> optWork = worksRepository.findById(UUID.fromString(workId));
         if (optWork.isPresent()) {
+            System.out.println("TEST 01");
             Work work = optWork.get();
+            System.out.println("TEST 02");
             if (worksPermissions.ownsWork(request, workMapper.toDto(work))) {
-
-                work.setLabel(work.getLabel());
-                work.setStartDate(work.getStartDate());
-                work.setEndDate(work.getEndDate());
-                work.setComment(work.getComment());
+                
+                System.out.println("TEST 03");
+                work.setLabel(workDto.getLabel());
+                work.setStartDate(workDto.getStartDate());
+                work.setEndDate(workDto.getEndDate());
+                work.setComment(workDto.getComment());
                 worksRepository.save(work);
             } else {
                 throw new AccessDeniedException(null);

@@ -7,6 +7,8 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.example.renovations.config.auth.TokenProvider;
@@ -32,10 +34,10 @@ public class WorkTypesService {
         this.tokenService = tokenProvider;
     }
 
-    public List<WorkTypeDto> getWorkTypes(HttpServletRequest request) {
+    public Page<WorkTypeDto> getWorkTypes(HttpServletRequest request, Pageable p) {
         UUID userId = UUID.fromString(tokenService.getIdFromToken(request));
-        List<WorkType> workTypes = (List<WorkType>) workTypesRepository.findUserWorkTypes(userId);
-        return workTypes.stream().map(work -> workTypeMapper.toDto(request, work, userId)).collect(Collectors.toList());
+        Page<WorkType> workTypes = workTypesRepository.findUserWorkTypes(userId, p);
+        return workTypes.map(work -> workTypeMapper.toDto(request, work, userId));
     }
 
     public WorkTypeDto getWorkTypeById(HttpServletRequest request, String workId) throws AccessDeniedException {

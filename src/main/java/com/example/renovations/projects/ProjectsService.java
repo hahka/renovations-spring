@@ -33,9 +33,9 @@ public class ProjectsService {
         this.tokenService = tokenProvider;
     }
 
-    public Page<ProjectDto> getProjects(HttpServletRequest request, Pageable p) {
+    public Page<ProjectDto> getProjects(HttpServletRequest request, String search, Pageable p) {
         Page<Project> projects2 = projectsRepository
-                .findUserProjects(UUID.fromString(tokenService.getIdFromToken(request)), p);
+                .findUserProjects(UUID.fromString(tokenService.getIdFromToken(request)), search, p);
         return projects2.map((project) -> projectMapper.toDto(project));
     }
 
@@ -47,14 +47,14 @@ public class ProjectsService {
         return projectMapper.toDto(project.get());
     }
 
-    public void createProject(HttpServletRequest request, Project project) {
+    public Project createProject(HttpServletRequest request, Project project) {
         List<User> list = new ArrayList<User>();
         list.add(
                 User.builder()
                         .id(UUID.fromString(tokenService.getIdFromToken(request)))
                         .build());
         project.setUsers(list);
-        projectsRepository.save(project);
+        return projectsRepository.save(project);
     }
 
     public void patchProject(HttpServletRequest request, String projectId, ProjectDto projectDto)

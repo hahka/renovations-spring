@@ -23,13 +23,24 @@ public class SecurityFilter extends OncePerRequestFilter {
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
       throws ServletException, IOException {
-    var token = tokenService.recoverToken(request);
-    if (token != null) {
-      var username = tokenService.getUsernameFromToken(request);
+  
+    var username = tokenService.getUsernameFromToken(request);
+    if (username == null) {
+      response.setStatus(401);
+    } else {
       var user = authService.loadUserByUsername(username);
       var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
       SecurityContextHolder.getContext().setAuthentication(authentication);
     }
+
+    // response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+    // response.setStatus(401);
+    
     filterChain.doFilter(request, response);
+  }
+
+  @Override
+  protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+    return request.getRequestURL().toString().contains("/auth/signin");
   }
 }
