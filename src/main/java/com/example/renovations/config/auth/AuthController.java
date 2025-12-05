@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.web.authentication.logout.CookieClearingLogoutHandler;
 import org.springframework.security.web.webauthn.api.AuthenticatorResponse;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -45,7 +46,6 @@ public class AuthController {
   public ResponseEntity<JwtDto> signIn(@RequestBody @Valid SignInDto data, HttpServletResponse response) {
     var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());
     var authentication = authenticationManager.authenticate(usernamePassword);
-    System.out.println(authentication.getPrincipal());
     var accessToken = tokenService.generateAccessToken((User) authentication.getPrincipal());
     Cookie cookie = new Cookie("accessToken", accessToken);
     cookie.setHttpOnly(true);
@@ -53,5 +53,16 @@ public class AuthController {
     response.addCookie(cookie);
     // return ResponseEntity.status(HttpStatus.OK).headers(null).body(new JwtDto(accessToken)).build();
     return ResponseEntity.ok(new JwtDto(accessToken));
+  }
+
+  
+  @PostMapping("/signout")
+  public ResponseEntity<?> logoutUser(HttpServletResponse response) {
+    Cookie cookie = new Cookie("accessToken", "");
+    cookie.setMaxAge(0);
+    cookie.setHttpOnly(true);
+    cookie.setPath("/");
+    response.addCookie(cookie);
+    return ResponseEntity.status(HttpStatus.ACCEPTED).build();
   }
 }

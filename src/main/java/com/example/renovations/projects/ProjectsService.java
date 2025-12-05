@@ -34,9 +34,9 @@ public class ProjectsService {
     }
 
     public Page<ProjectDto> getProjects(HttpServletRequest request, String search, Pageable p) {
-        Page<Project> projects2 = projectsRepository
+        Page<Project> projects = projectsRepository
                 .findUserProjects(UUID.fromString(tokenService.getIdFromToken(request)), search, p);
-        return projects2.map((project) -> projectMapper.toDto(project));
+        return projects.map((project) -> projectMapper.toDto(project));
     }
 
     public ProjectDto getProjectById(HttpServletRequest request, String projectId) {
